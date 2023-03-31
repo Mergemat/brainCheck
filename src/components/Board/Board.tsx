@@ -6,10 +6,10 @@ type Props = { board: ICell[]; setItemActive: (index: number) => void };
 
 export const Board = ({ board, setItemActive }: Props) => {
   return (
-    <div className="flex rounded-3xl bg-teal-100 p-10 shadow-lg">
+    <div className="flex rounded-3xl bg-teal-100 p-5  md:p-10 shadow-lg">
       <div
         style={{ gridTemplateColumns: 'repeat(5, minmax(0, 1fr))' }}
-        className="grid grid-rows-5 gap-6"
+        className="grid grid-rows-5 gap-3 md:gap-6"
       >
         {board.map((item, index) => (
           <Cell

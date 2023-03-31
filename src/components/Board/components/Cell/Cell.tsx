@@ -17,7 +17,7 @@ export const Cell = ({ item, onClick }: Props) => {
           ? 'rgb(251 113 133)'
           : 'rgb(153 246 228)',
       }}
-      className="h-24 w-24 rounded-xl"
+      className="w-12 h-12 md:h-24 md:w-24 rounded-xl"
       onClick={onClick}
       disabled={item.active || item.error}
     ></motion.button>
