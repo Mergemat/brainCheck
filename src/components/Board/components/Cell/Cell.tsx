@@ -10,14 +10,11 @@ export const Cell = ({ item, onClick }: Props) => {
       whileTap={{ scale: 0.8 }}
       initial={{ scale: 0.8 }}
       animate={{ scale: 1 }}
-      style={{
-        background: item.active
-          ? 'rgb(45 212 191)'
-          : item.error
-          ? 'rgb(251 113 133)'
-          : 'rgb(153 246 228)',
-      }}
-      className="w-12 h-12 md:h-24 md:w-24 rounded-xl"
+      className={`h-12 w-12 rounded-xl md:h-24 md:w-24 ${
+        item.active
+          ? 'bg-teal-500 dark:bg-teal-200'
+          : 'bg-teal-200 dark:bg-teal-500'
+      } ${item.error && 'bg-rose-400 dark:bg-rose-300'}`}
       onClick={onClick}
       disabled={item.active || item.error}
     ></motion.button>
