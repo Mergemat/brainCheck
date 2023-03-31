@@ -25,6 +25,7 @@ const App = () => {
         onClick={gameInstance.startGame}
         whileTap={{ scale: 0.9 }}
         className="mt-7 flex rounded-2xl bg-teal-100 p-5 text-4xl font-semibold tracking-wide text-teal-900 shadow-lg"
+        disabled={gameInstance.isPlaying}
       >
         start game
       </motion.button>

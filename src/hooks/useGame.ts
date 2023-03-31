@@ -46,6 +46,6 @@ export const useGame = () => {
 
   return {
     boardInstance: { board, setItemActive },
-    gameInstance: { startGame, score },
+    gameInstance: { startGame, score, isPlaying },
   };
 };
