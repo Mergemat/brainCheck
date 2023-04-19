@@ -1,51 +1,79 @@
 import { useBoard } from '@components/Board/hooks/useBoard';
+import {
+  defaultState,
+  getNewTasks,
+} from '@components/Board/hooks/useBoard.utils';
+import { Cell } from '@types';
 import { useEffect, useState } from 'react';
 
 export const useGame = () => {
-  const { board, setItemActive, tasks, clearBoard, shuffle } = useBoard();
-  const [isPlaying, setIsPlaying] = useState<boolean>(false);
-  const [done, setDone] = useState<boolean>(false);
-  const [wrong, setWrong] = useState<boolean>(false);
+  const [size, setSize] = useState<number>(4);
   const [score, setScore] = useState<number>(0);
+  const { board, setBoard } = useBoard();
+  const [progress, setProgress] = useState<number>(0);
+  const [task, setTask] = useState<Cell[]>(getNewTasks(size));
+  const [isShowing, setIsShowing] = useState(false);
+
+  const set = () => {
+    setTask(getNewTasks(size));
+    setTimeout(() => {
+      setBoard(defaultState());
+    }, 200);
+    setTimeout(() => {
+      startGame();
+    }, 400)
+  };
 
   useEffect(() => {
-    if (done == true) {
+    if (size == 4) {
+      return;
+    }
+    set();
+  }, [size]);
+
+  useEffect(() => {
+    if (progress == size && board.filter((item) => item.error).length == 0) {
       setScore((prev) => prev + 1);
-      setTimeout(() => {
-        setIsPlaying(true);
-        setDone(false);
-        setWrong(false);
-        shuffle();
-      }, 700);
     }
-  }, [done]);
+  }, [progress]);
 
   useEffect(() => {
-    if (board.filter((cell) => cell.error).length) {
-      setWrong(true);
-      setIsPlaying(false);
+    if (score == 0) {
+      return;
     }
-  }, [board]);
+    if (score % 4 == 0) {
+      setSize((prev) => prev + 1);
+    } else {
+      set();
+    }
+  }, [score]);
 
-  useEffect(() => {
-    if (tasks.length == 0 && isPlaying == true) {
-      setDone(true);
-      setIsPlaying(false);
-      setTimeout(() => {
-        clearBoard();
-      }, 400);
+  const setItemActive = (index: number) => {
+    const prev = board;
+    if (task[index].active == true) {
+      prev[index].active = true;
+    } else {
+      prev[index].error = true;
     }
-  }, [tasks]);
+    setBoard([...prev]);
+    setProgress((prev) => prev + 1);
+  };
 
   const startGame = () => {
-    setIsPlaying(true);
-    setDone(false);
-    setWrong(false);
-    shuffle();
+    setProgress(0);
+    setIsShowing(true);
+
+    setTimeout(() => {
+      setIsShowing(false);
+    }, 1000);
   };
 
   return {
-    boardInstance: { board, setItemActive },
-    gameInstance: { startGame, score, isPlaying },
+    board: {
+      state: isShowing ? task : board,
+      setItemActive: isShowing ? () => {} : setItemActive,
+    },
+    startGame,
+    score,
   };
 };

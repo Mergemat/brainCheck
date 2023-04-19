@@ -1,10 +1,10 @@
-import { ICell } from '@types';
+import { Cell } from '@types';
 import { motion } from 'framer-motion';
 import React from 'react';
 
-type Props = { item: ICell; onClick: () => void };
+type Props = { item: Cell; onClick: () => void };
 
-export const Cell = ({ item, onClick }: Props) => {
+export const BoardCell = ({ item, onClick }: Props) => {
   return (
     <motion.button
       whileTap={{ scale: 0.8 }}

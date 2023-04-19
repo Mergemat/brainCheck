@@ -1,18 +1,28 @@
-import { ICell } from '@types';
+import { Cell } from '@types';
 import { motion } from 'framer-motion';
-import { Cell } from './components/Cell';
+import { BoardCell } from './components/BoardCell';
 
-type Props = { board: ICell[]; setItemActive: (index: number) => void };
+type Props = {
+  board: {
+    state: Cell[];
+    setItemActive: (index: number) => void;
+  };
+  show: boolean;
+};
 
-export const Board = ({ board, setItemActive }: Props) => {
-  return (
+export const Board = ({ board, show }: Props) => {
+  const { state, setItemActive } = board;
+  return show ? (
     <div className="flex rounded-3xl bg-teal-100 p-5 shadow-lg dark:bg-teal-800 md:p-10">
       <div
-        style={{ gridTemplateColumns: 'repeat(5, minmax(0, 1fr))' }}
-        className="grid grid-rows-5 gap-3 md:gap-6"
+        style={{
+          gridTemplateColumns: `repeat(6, minmax(0, 1fr))`,
+          gridTemplateRows: `repeat(6, minmax(0, 1fr))`,
+        }}
+        className="grid gap-3 md:gap-6"
       >
-        {board.map((item, index) => (
-          <Cell
+        {state.map((item, index) => (
+          <BoardCell
             key={`${item}-${index}`}
             item={item}
             onClick={() => setItemActive(index)}
@@ -20,5 +30,5 @@ export const Board = ({ board, setItemActive }: Props) => {
         ))}
       </div>
     </div>
-  );
+  ) : null;
 };

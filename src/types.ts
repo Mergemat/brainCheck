@@ -1,1 +1,1 @@
-export type ICell = { active: boolean; error: boolean };
+export type Cell = { active: boolean; error: boolean };
