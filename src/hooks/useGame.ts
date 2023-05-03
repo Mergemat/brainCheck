@@ -4,36 +4,33 @@ import {
   getNewTasks,
 } from '@components/Board/hooks/useBoard.utils';
 import { Cell } from '@types';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 export const useGame = () => {
   const [size, setSize] = useState<number>(4);
   const [score, setScore] = useState<number>(0);
-  const { board, setBoard } = useBoard();
+  const defaultBoardState = useMemo(() => defaultState(), [score]);
+
+  const [board, setBoard] = useState<Cell[]>(defaultBoardState);
   const [progress, setProgress] = useState<number>(0);
-  const [task, setTask] = useState<Cell[]>(getNewTasks(size));
+  const task = useMemo(() => getNewTasks(size), [size, score]);
   const [isShowing, setIsShowing] = useState(false);
 
-  const set = () => {
-    setTask(getNewTasks(size));
-    setTimeout(() => {
-      setBoard(defaultState());
-    }, 200);
-    setTimeout(() => {
-      startGame();
-    }, 400)
-  };
+  const increaseScore = useCallback(() => setScore((prev) => prev + 1), []);
+  const increaseSize = useCallback(() => setSize((prev) => prev + 1), []);
 
-  useEffect(() => {
-    if (size == 4) {
-      return;
-    }
-    set();
+  const set = useCallback(() => {
+    setTimeout(() => {
+      setBoard(defaultBoardState);
+      setTimeout(() => {
+        startGame();
+      }, 400);
+    }, 200);
   }, [size]);
 
   useEffect(() => {
     if (progress == size && board.filter((item) => item.error).length == 0) {
-      setScore((prev) => prev + 1);
+      increaseScore();
     }
   }, [progress]);
 
@@ -42,31 +39,35 @@ export const useGame = () => {
       return;
     }
     if (score % 4 == 0) {
-      setSize((prev) => prev + 1);
-    } else {
-      set();
+      increaseSize();
     }
+    set();
   }, [score]);
 
-  const setItemActive = (index: number) => {
-    const prev = board;
-    if (task[index].active == true) {
-      prev[index].active = true;
-    } else {
-      prev[index].error = true;
-    }
-    setBoard([...prev]);
-    setProgress((prev) => prev + 1);
-  };
+  const setItemActive = useCallback(
+    (index: number) => {
+      const prev = board;
 
-  const startGame = () => {
+      if (task[index].active == true) {
+        prev[index].active = true;
+      } else {
+        prev[index].error = true;
+      }
+
+      setBoard([...prev]);
+      setProgress((prev) => prev + 1);
+    },
+    [board, progress]
+  );
+
+  const startGame = useCallback(() => {
     setProgress(0);
     setIsShowing(true);
 
     setTimeout(() => {
       setIsShowing(false);
     }, 1000);
-  };
+  }, [size]);
 
   return {
     board: {

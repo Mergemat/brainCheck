@@ -17,6 +17,7 @@ export const getNewTasks = (size: number) => {
 };
 
 export const defaultState = (): Cell[] => {
+  console.log("defff")
   return Array(36)
     .fill(0)
     .map(() => ({ active: false, error: false }));
