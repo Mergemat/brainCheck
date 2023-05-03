@@ -1,3 +1,3 @@
 # brainCheck
 
-Small brain benchmark for checking memory and algorithmic thinking
+Small brain benchmark for checking memory
