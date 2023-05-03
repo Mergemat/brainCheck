@@ -9,4 +9,5 @@ export const GameContext = createContext<{
   };
   startGame: () => void;
   score: number;
+  isPlaying: boolean;
 } | null>(null);

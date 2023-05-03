@@ -1,16 +1,5 @@
-import { Cell } from '@types';
-import { motion } from 'framer-motion';
 import { BoardCell } from './components/BoardCell';
-import { useContext } from 'react';
 import { useGameContext } from '@hooks/useGameContext';
-
-// type Props = {
-//   board: {
-//     state: Cell[];
-//     setItemActive: (index: number) => void;
-//   };
-//   show: boolean;
-// };
 
 export const Board = () => {
   const { board } = useGameContext();

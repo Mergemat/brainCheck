@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import { memo } from 'react';
 import { Board } from '@components';
 import { GameContext } from '@components/Game/Game.context';
 import { useGame } from '@hooks/useGame';
@@ -16,16 +16,16 @@ const Game = memo((props: Props) => {
       >
         {context.score}
       </motion.h1>
-
-      <Board />
-
-      <motion.button
-        onClick={context.startGame}
-        whileTap={{ scale: 0.9 }}
-        className={`mt-7 flex rounded-2xl bg-teal-100 p-5 px-6 text-4xl font-semibold tracking-wide text-teal-900 shadow-lg dark:bg-teal-800 dark:text-teal-50`}
-      >
-        start game
-      </motion.button>
+      {context.isPlaying ? <Board /> : null}
+      {!context.isPlaying ? (
+        <motion.button
+          onClick={context.startGame}
+          whileTap={{ scale: 0.9 }}
+          className={`mt-7 flex rounded-2xl bg-teal-100 p-5 px-6 text-4xl font-semibold tracking-wide text-teal-900 shadow-lg dark:bg-teal-800 dark:text-teal-50`}
+        >
+          start game
+        </motion.button>
+      ) : null}
     </GameContext.Provider>
   );
 });
